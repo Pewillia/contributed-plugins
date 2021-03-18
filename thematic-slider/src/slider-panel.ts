@@ -82,22 +82,51 @@ export class SliderPanel {
         // set layers from config
         this._layers = config.layers;
 
+        console.log("this_layers 11",this._layers);
+
         // check if all layers are loaded before starting the animation
-        this._mapApi.layersObj.layerAdded.subscribe((addedLayer: any) => {
+        this._mapApi.layersObj.layerAdded.subscribe( (addedLayer: any) => {
             // check if loaded layer is inside the config
-            this._layers.find((layer: any) => { if (layer.id === addedLayer.id) { this._layerNb++; }});
+            this._layers.find((layer: any) => { console.log("to add layer id", addedLayer.id);  if (layer.id === addedLayer.id) { this._layerNb++; 
+                  console.log("added layer id", addedLayer.id);  console.log("layer id",layer.id); }});
+
+       //    ;
+
+
+             // if all layers are loaded ------ to add
+  //      if (**this._layerNb === this._layers.length**) {.  the number of layer === ... we need to check if a layer is find...
 
             // if all layers are loaded
-            if (this._layerNb === this._layers.length) {
+
+            // try something like line below
+            let  foundlayer = 0 ;
+            //some returns boolean
+            this._layers.some((layer: any)  => {  if (layer.id === addedLayer.id) { foundlayer = 1; }});
+           
+            if (( this._layerNb === this._layers.length) &&  (foundlayer)) {
+     
+        //      if (this._layerNb === this._layers.length) {
+
+                console.log("_layerNb", this._layerNb); 
+
+                console.log("_layer", this._layers.length); 
+
+                console.log("this_layers --",this._layers);
+
+                
                 // set Legend state (open by default)
                 SliderPanel.setLegendState(true);
 
                 // init panel title and description with the first element
                 this.setPanelInfo();
 
+                console.log(" Panel initialized with title first elemecnt");
+
                 // apply a timeout with 1000, if not, the legend section is not aviallable
                 setTimeout(() => {
                     this.setPanelLegend();
+                    console.log(" set Panel legend");
+
 
                     // check if the panel should be open and if the slider is in autorun
                     if (config.open) { this.open(); }
@@ -109,11 +138,19 @@ export class SliderPanel {
 
                 // set slider control (loop and stack) value
                 this._loop = config.loop;
+                console.log(" config.loop =",config.loop);
+
                 this._stack = config.stack;
+                console.log(" config.stack =",config.stack);
+
                 this._legendStack = config.legendStack;
+                console.log(" config.legendStack=",config.legendStack);
+
 
                 // check what controls we need (description or both)
                 const initControls: string = (config.slider) ? 'both' : 'desc';
+                console.log(" init controls",initControls, );
+
                 this.addControls(initControls);
             }
         });
