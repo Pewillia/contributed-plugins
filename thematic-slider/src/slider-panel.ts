@@ -2,6 +2,7 @@ import { SLIDER_TEMPLATE } from './template';
 import { SliderControls } from './slider-controls';
 
 import { Observable, BehaviorSubject } from 'rxjs';
+import { notDeepEqual } from 'assert';
 
 export class SliderPanel {
     private _mapApi: any;
@@ -81,14 +82,14 @@ export class SliderPanel {
 
         // set layers from config
         this._layers = config.layers;
-
+  
         // check if all layers are loaded before starting the animation
         this._mapApi.layersObj.layerAdded.subscribe((addedLayer: any) => {
             // check if loaded layer is inside the config
             this._layers.find((layer: any) => { if (layer.id === addedLayer.id) { this._layerNb++; }});
 
             // if all layers are loaded
-            if (this._layerNb === this._layers.length) {
+            if ((this._layerNb === this._layers.length) && (this._layers.find((layer: any) => layer.id === addedLayer.id))) {
                 // set Legend state (open by default)
                 SliderPanel.setLegendState(true);
 
@@ -169,7 +170,7 @@ export class SliderPanel {
             stack = this.getDefaultLegend();
         } else {
             stack = this.getCustomLegend();
-        }
+        };
 
         if ($('.rv-thslider-legend').length > 0) {
             // If stack and direction is up, add the array of images
@@ -271,7 +272,7 @@ export class SliderPanel {
      * @param {String} direction the direction to step
      * @return {Boolean} true if last or first element of the array, false otherwise
      */
-    step(direction: string = 'up') {
+    step(direction: string = 'up') { 
         let lastStep = true;
         if (direction === 'up' && this._index < this._layers.length - 1) {
             this._index++;
@@ -283,11 +284,13 @@ export class SliderPanel {
             this._index = 0;
             lastStep = false;
         }
-
+       
         // set panel info and layers visibility
+  //      if (lastStep===false) {
         this.setPanelInfo();
         this.setPanelLegend(direction);
         this.setLayerVisibility();
+  //      }
 
         // check if you need to enable/disable step buttons and push the info to the observable
         const enableButtons = (this._index > 0 && this._index < this._layers.length - 1) ? '' : (this._index === 0) ? 'down' : 'up';
