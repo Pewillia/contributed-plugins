@@ -88,7 +88,8 @@ export class SliderPanel {
             this._layers.find((layer: any) => { if (layer.id === addedLayer.id) { this._layerNb++; }});
 
             // if all layers are loaded
-            if (this._layerNb === this._layers.length) {
+            if ((this._layerNb === this._layers.length) && (this._layers.find((layer: any) => layer.id === addedLayer.id)))
+{
                 // set Legend state (open by default)
                 SliderPanel.setLegendState(true);
 
@@ -166,19 +167,19 @@ export class SliderPanel {
         // if legend element array is empty, create default legend, otherwise use configuration
         let stack = '';
         if (this.active.legend.length === 0) {
-            stack = this.getDefaultLegend();
+            stack = this.getDefaultLegend();console.log('set panel legend -defaultlegend',stack);
         } else {
             stack = this.getCustomLegend();
         }
-
+        console.log('stack length ',$('.rv-thslider-legend').length  )
         if ($('.rv-thslider-legend').length > 0) {
             // If stack and direction is up, add the array of images
             // If direction is down, remove the last item
             // If no stack, just set it to the active image
             if (this._legendStack && direction === 'up' && this._index > 0) {
-                stack = $('.rv-thslider-legend')[0].innerHTML + stack;
+                stack = $('.rv-thslider-legend')[0].innerHTML + stack;console.log('set panel legend up',this._index,'slidr legend',$('.rv-thslider-legend')[0].innerHTML ,'stack',this._legendStack );
             } else if (this._legendStack && direction === 'down' && this._index > 0) {
-                const symbols = $('.rv-thslider-symbol');
+                const symbols = $('.rv-thslider-symbol');console.log('set panel legend down',this._index,'directio-',direction,'stack',this._legendStack );
                 stack = '';
                 for (let i = 0; i < symbols.length - 1; i++) {
                     stack += symbols[i].outerHTML;
@@ -186,7 +187,7 @@ export class SliderPanel {
             }
 
             $('.rv-thslider-legend')[0].innerHTML = stack;
-        }
+        }console.log(' end slidr legend',$('.rv-thslider-legend')[0].innerHTML ,'stack',this._legendStack );
     }
 
     /**
@@ -222,7 +223,7 @@ export class SliderPanel {
     private getDefaultLegend(): string {
         // add the legend to description panel, first find the right entry
         let stack = '';
-        const that = this;
+        const that = this;console.log('getdefault legend ------- this.index',this._index);
         const legendBlocks = this._mapApi.layersObj._layersArray[this._index]._mapInstance._legendBlocks.entries.find((entry) => {
             return entry._layerRecordId === that._layers[that._index].id;
         });
@@ -271,7 +272,7 @@ export class SliderPanel {
      * @param {String} direction the direction to step
      * @return {Boolean} true if last or first element of the array, false otherwise
      */
-    step(direction: string = 'up') {
+    step(direction: string = 'up') { console.log('calling step');
         let lastStep = true;
         if (direction === 'up' && this._index < this._layers.length - 1) {
             this._index++;
@@ -283,12 +284,13 @@ export class SliderPanel {
             this._index = 0;
             lastStep = false;
         }
-
+       console.log('step this._index',this._index );
         // set panel info and layers visibility
+        if(!lastStep){               //get rid of duplicate image in panel of last panel displayed
         this.setPanelInfo();
         this.setPanelLegend(direction);
         this.setLayerVisibility();
-
+       }
         // check if you need to enable/disable step buttons and push the info to the observable
         const enableButtons = (this._index > 0 && this._index < this._layers.length - 1) ? '' : (this._index === 0) ? 'down' : 'up';
         SliderPanel.setLastStep(enableButtons);
@@ -328,12 +330,20 @@ export class SliderPanel {
         if (isPlaying) {
             // if index = last, re init the slider.
             // otherwise, continue where it is
+            console.log('play index ',this._index,'layer lengthl ',this._layers.length-1);
             this._index =  (this._index === this._layers.length - 1) ? 0 : this._index;
-            this.setPanelInfo();
+            console.log('play index2 ',this._index,'layer lengthl ',this._layers.length-1);
+           
+            this.setPanelInfo();  //can't pass -1 to set panel info
 
             // timeout function to play the slider with the duration provided within configuration
             setTimeout(this.setPlayInterval, this.active.duration, this);
+            //pw try 1 ------------------------------------------------------------------------------------------------
+            // step will incrase index by 1 on entry causing
+            this._index =this._index -1;
 
+        console.log('play index3 ',this._index,'layer lengthl ',this._layers.length-1);
+          
         } else { clearInterval(this._playTimeout); }
     }
 
@@ -345,8 +355,7 @@ export class SliderPanel {
     private setPlayInterval(that) {
         // step and get if it is the last step then clear the interval before we create a new one
         const last = that.step();
-        clearInterval(that._playTimeout);
-
+        clearInterval(that._playTimeout); 
         // if not the last, call this function again in ... seconds from configuration 
         if (!last) {
             that._playTimeout = setInterval(that.setPlayInterval, (<any>that).active.duration, that);
