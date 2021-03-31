@@ -1,4 +1,4 @@
-/*! Plugin chart: 0.1.2 - "a2373e986ddc0a11f07e67453cdfd586f3342709" */(()=>{var e={7757:function(e,t,n){
+/*! Plugin chart: 0.1.2 - "1cae56b6358fbe0ebde6c403f9aef6ffcdc20375" */(()=>{var e={7757:function(e,t,n){
 /*!
  * Chart.js v2.8.0
  * https://www.chartjs.org
