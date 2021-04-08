@@ -404,10 +404,11 @@ export class ChartLoader {
         }
 
         // loop trough datasets to add from config
-        for (let data of config.data) {
+        for (let data of config.data) {console.log(' config data, mease,attrs',config.data,data.measure,attrs.data);
             const fieldData = data.measure;
             const prefix = data.prefix;
             const suffix = data.suffix;
+            
             const values = attrs.data.find(i => i.field === fieldData).value;
 
             // if regex is provided, it is because there is multiple datasets in the value field
@@ -415,10 +416,10 @@ export class ChartLoader {
             // for combine, there is 2 values by field (x and y). We do not support more then 1 dataset
             let parseValues = (data.regex !== '' && data.type === 'single') ?
                 values.replace(new RegExp(data.regex, 'g'), '*').split('*').filter(Boolean) : [values];
-
+                console.log(' parsevalues ',parseValues);
             // loop trough array of data inside a field values, first check if there is data to parse
             if (parseValues[0] !== null) {
-                for (let [i, parse] of parseValues.entries()) {
+                for (let [i, parse] of parseValues.entries()) { console.log('  parsed',parsed);
                     // add values and colors
                     const item: any = {
                         data: [],
@@ -426,17 +427,18 @@ export class ChartLoader {
                         backgroundColor: colors,
                         suffix: suffix,
                         prefix: prefix
+ //                       hidden : 'false'
                     };
     
                     // loop trough values
                     if (data.type === 'single') {
                         parse = parse.toString().split(data.split);
-                        for (let value of parse) {
+                        for (let value of parse) {console.log(' single',value);
                             item.data.push(value);
                         }
                     } else if (data.type === 'combine') {
                         let parseCombValues = parse.replace(new RegExp(data.regex, 'g'), '*').split('*').filter(Boolean);
-                        for (let val of parseCombValues) {
+                        for (let val of parseCombValues) {console.log(' combine',val);
                             let splitVal = val.split(data.split);
     
                             // force time to get the right day or use number
@@ -449,7 +451,7 @@ export class ChartLoader {
                 }
             }
         }
-
+        console.log('  parsed',parsed);
         return parsed;
     }
 
@@ -475,7 +477,7 @@ export class ChartLoader {
         if (!Array.isArray(labels)) {
             labels = Array(index + 1).fill(labels);
         }
-
+        console.log('  labels',labels);
         return labels;
     }
 }

@@ -21,11 +21,11 @@ export class ChartPie {
         // set data options
         const layerData = config.layers.find((i: any) => i.id === (<any>attrs).layerId);
         this.data = ChartLoader.parse(layerData, attrs, config.colors);
-
+        console.log('constructor-------------- pie chart data', this);
         // set labels options
         // if more labels are provided then the first datasets number of values, they will be striketrought
         this.data.labels = ChartLoader.getLabels(config.labelsPie, attrs);
-
+console.log('constructor-------------- pie chartlabels config.', this.data.labels);
         // add default colors if not set from config or data
         const colors = config.options.colors === '' ? ChartLoader.defaultColors : config.options.colors.split(';');
         this.setColors(this.data.datasets, colors);
