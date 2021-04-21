@@ -427,11 +427,11 @@ export class ChartLoader {
                         suffix: suffix,
                         prefix: prefix
                     };
-    
+                    console.log( '-------parse dat =',data);
                     // loop trough values
                     if (data.type === 'single') {
                         parse = parse.toString().split(data.split);
-                        for (let value of parse) {
+                        for (let value of parse) {console.log( '-------parse value =',value);
                             item.data.push(value);
                         }
                     } else if (data.type === 'combine') {

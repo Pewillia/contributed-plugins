@@ -21,7 +21,7 @@ export class ChartPie {
         // set data options
         const layerData = config.layers.find((i: any) => i.id === (<any>attrs).layerId);
         this.data = ChartLoader.parse(layerData, attrs, config.colors);
-
+         console.log('---- layer data,attrs,config',layerData, attrs, config.colors);
         // set labels options
         // if more labels are provided then the first datasets number of values, they will be striketrought
         this.data.labels = ChartLoader.getLabels(config.labelsPie, attrs);
@@ -45,7 +45,11 @@ export class ChartPie {
             borderWidth: 3,
             hoverBackgroundColor: '#fff',
             hoverBorderColor: '#fff',
-            cutoutPercentage: cutOut,
+   //         cutoutPercentage: cutOut,
+            cutout:'0%',
+ //           circumference: '270%',
+            radius:'180%',
+            weigth: .75,
             animation: {
                 animateRotate: true,
                 animateScale: true
