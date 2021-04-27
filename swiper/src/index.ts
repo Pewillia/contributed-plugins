@@ -24,7 +24,7 @@ export default class Swiper {
         });
 
         // get ESRI LayerSwipe dependency
-        let myBundlePromise = (<any>window).RAMP.GAPI.esriLoadApiClasses([['esri/dijit/LayerSwipe', 'layerSwipe']]);
+        let myBundlePromise = (<any>window).RAMP.GAPI.esriLoadApiClasses([['esri/dijit/LayerSwipe', 'layerSwipe',]]);
         myBundlePromise.then(myBundle => {
             const inter = setInterval(() => {
                 // if all layers require by the plugin are loaded, start it
@@ -49,46 +49,64 @@ export default class Swiper {
         while (len--) {
             layers.push(this.mapApi.esriMap.getLayer(swiper.layers[len].id));
         }
-
+       
         // add swiper div
         this.mapApi.mapDiv.find('rv-shell').find('.rv-esri-map').prepend('<div id="rv-swiper-div"></div>');
-
+       
         // create swiper
-        const swipeWidget = new myBundle.layerSwipe({
+       const swipeWidget = new myBundle.layerSwipe({
             type: swiper.type,
             map: this.mapApi.esriMap,
             layers: layers,
+            top: document.body.scrollHeight/2,
             left: this.getWidth() / 2
-        }, 'rv-swiper-div');
-
+       }, 'rv-swiper-div');
         let that = this;
         swipeWidget.on('load', function() {
-            const item = that.mapApi.mapDiv.find('#rv-swiper-div .vertical')[0];
-
-            // set tabindex and WCAG keyboard offset
-            item.tabIndex = -3;
-            item.addEventListener('keydown', that.closureFunc(function(swipeWidget, item, off, evt) {
+            const item  = that.mapApi.mapDiv.find('#rv-swiper-div .'+swipeWidget.type)[0];
+            
+          // set tabindex and WCAG keyboard offset
+           item.tabIndex = -3;
+    
+           item.addEventListener('keydown', that.closureFunc(function(swipeWidget, item, off, evt) {
                 let value = parseInt(item.style.left);
                 const width = parseInt(that.mapApi.mapDiv.find('#rv-swiper-div').width()) - 10;
-
-                if (evt.keyCode === 37 && value >= 0) {
-                    // left 37
-                    value = (value > off) ? value -= off : 0;
-                } else if (evt.keyCode === 39 && value <= width) {
-                    // right 39
-                    value = (value <= width - off) ? value += off : width;
+                if (swiper.type === 'vertical') {
+                    let value = parseInt(item.style.left);
+                    const width = parseInt(that.mapApi.mapDiv.find('#rv-swiper-div').width()) - 10;
+  
+                    if (evt.keyCode === 37 && value >= 0) {
+                        // left 37
+                        value = (value > off) ? value -= off : 0;
+                    } else if (evt.keyCode === 39 && value <= width) {
+                        // right 39
+                        value = (value <= width - off) ? value += off : width;
                 }
                 item.style.left = String(value + 'px');
-                swipeWidget.swipe();
+                } else if (swiper.type === 'horizontal'){
+                    let value = parseInt(item.style.top);
+                    const heigth = parseInt(that.mapApi.mapDiv.find('#rv-swiper-div').width()) - 10;
+  
+                    if (evt.keyCode === 38 && value >= 0) {
+                        // up 38
+                        value = (value > off) ? value -= off : 0;
+                    } else if (evt.keyCode === 40 && value <= heigth) {
+                        // down 40
+                        value = (value <= heigth- off) ? value += off : heigth;
+                }
+               item.style.top = String(value + 'px');
+                
+            }
+            swipeWidget.swipe();
             }, swipeWidget, item, swiper.keyboardOffset));
 
             // change text if french and add the layer names
-            if (that._RV.getCurrentLang() === 'fr-CA') {
-                item.title = 'Faites glisser pour voir les couches sous-jacentes';
-            }
+          if (that._RV.getCurrentLang() === 'fr-CA') {
+               item.title = 'Faites glisser pour voir les couches sous-jacentes';
+          }
 
             // add layer name to tooltip
-            item.title += `\r\n- ${that.layerNames.join(',\r\n- ')}`;
+           item.title += `\r\n- ${that.layerNames.join(',\r\n- ')}`;
         });
 
         swipeWidget.startup();
