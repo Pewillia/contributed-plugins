@@ -1,5 +1,4 @@
 export default class RangeSlider {
-    private _button;
     /**
     * Plugin init
     * @function init
@@ -7,11 +6,11 @@ export default class RangeSlider {
     */
     init(mapApi: any): void;
     /**
-    * Event to fire on side menu item click. Open/Close the panel
-    * @function onMenuItemClick
-    * @return {function} the function to run
-    */
-    onMenuItemClick(): () => void;
+     * Parse and extend the configuration object for missing properties
+     * @param {any} config the configuration object
+     * @returns the extented config
+     */
+    parsePluginConfig(config: any): any;
 }
 export default interface RangeSlider {
     mapApi: any;

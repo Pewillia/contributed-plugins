@@ -86,60 +86,80 @@
         "root": {
           "name": "root",
           "children": [
+            {
+              "name": "A Group with a hidden layer",
+              "expanded": true,
+              "children": [
+                {
+                  "layerId": "0",
+                  "hidden": true
+                },
+                {
+                  "layerId": "powerplant100mw-naturalGas"
+                }
+              ]
+            },
+            {
+              "layerId": "GeoChron"
+            }
           ]
         }
       },
-      "layers": [
-        {
-          "id": "powerplant100mw-naturalGas",
-          "name": "Natural Gas Pipeline",
-          "layerType": "esriFeature",
-          "url": "https://geoappext.nrcan.gc.ca/arcgis/rest/services/NACEI/energy_infrastructure_of_north_america_en/MapServer/2"
+      "layers": [{
+          "id": "acqplan",
+          "name": "Acquisition Plan Collection - active",
+          "layerType": "esriDynamic",
+          "url": "https://maps-cartes.services.geo.ca/egs_sgu/rest/services/Acquisition_Plan/EGS_AcquisitionPlan_Collection_Active_en/MapServer/",
+          "layerEntries": [{
+            "index": 1,
+            "name": "Today"
+          },
+          {
+            "index": 2,
+            "name": "Futur - 12 tp 72 hours"
+          },
+          {
+            "index": 3,
+            "name": "Past - 12 to 72 hours"
+          }]
         },
         {
-          "layerType": "ogcWms",
-          "colour": "#ff0000",
-          "toggleSymbology": true,
-          "refreshInterval": 0,
-          "expectedResponseTime": 4000,
-          "tolerance": 5,
-          "imageFormat": "png32",
-          "singleEntryCollapse": false,
-          "suppressGetCapabilities": true,
-          "state": {
-              "opacity": 1,
-              "visibility": true,
-              "boundingBox": false,
-              "query": true,
-              "snapshot": false,
-              "hovertips": true
+          "id": "0",
+          "name": "Active flood - EMPTY",
+          "layerType": "esriDynamic",
+          "url": "https://maps-cartes.services.geo.ca/egs_sgu/rest/services/Flood_Inondation/EGS_Flood_Product_Active_en/MapServer/",
+          "layerEntries": [{
+            "index": 0,
+            "name": "Product Footprints"
           },
-          "layerEntries": [
-              {
-                  "outfields": "*",
-                  "stateOnly": false,
-                  "state": {
-                      "opacity": 1,
-                      "visibility": true,
-                      "boundingBox": false,
-                      "query": true,
-                      "snapshot": false,
-                      "hovertips": true
-                  },
-                  "allStyles": [
-                      "default"
-                  ],
-                  "init": true,
-                  "id": "0",
-                  "name": "Sample",
-                  "currentStyle": "default"
-              }
-          ],
-          "name": "wms",
-          "id": "wms",
-          "url": "https://webservices.maps.canada.ca/arcgis/services/ELECTIONS/elections_canada_2019_en/MapServer/WMSServer",
-          "legendMimeType": "image/png"
-      }
+          {
+            "index": 1,
+            "name": "In Canada"
+          },
+          {
+            "index": 2,
+            "name": "Flooded Area in Canada"
+          }]
+        },
+        {
+          "id": "1",
+          "name": "Current flood",
+          "layerType": "ogcWms",
+          "suppressGetCapabilities": true,
+          "url": "https://maps-cartes.services.geo.ca/egs_sgu/services/Flood_Inondation/EGS_Flood_Product_Current_en/MapServer/WMSServer",
+          "layerEntries": [{
+            "id": "0",
+            "name": "Product Footprints"
+          },
+          {
+            "id": "1",
+            "name": "In Canada"
+          },
+          {
+            "id": "2",
+            "name": "Flooded Area in Canada"
+          }]
+        }
       ],
       "extentSets": [
         {
@@ -295,25 +315,27 @@
     "plugins": {
       "rangeSlider": {
         "open": true,
-        "maximize": false,
-        "maximizeDesc": false,
         "autorun": false,
         "loop": false,
-        "controls": ["lock", "loop", "delay", "refresh", "reverse"],
+        "controls": ["lock", "loop", "refresh", "reverse"],
         "params": {
           "delay": 3000,
-          "type": "number",
+          "type": "wmst",
           "rangeType": "dual",
           "stepType": "dynamic",
-          "precision": 0,
-          "range": { "min": 0, "max": 1000 },
-          "limit": { "min": 0, "max": 10000 },
+          "precision": "date",
+          "startRangeEnd": true,
+          "rangeInterval": 604800000,
+          "range": { "min": null, "max": null },
+          "limit": { "min": null, "max": null },
+          "limits": [],
           "units": "",
-          "description": ""
+          "description": "Let see current and active flood from January 2020 to May 2021. Interval set by week"
         },
         "layers": [{
-            "id": "wms",
-            "field": "OBJECTID"
+          "id": "1",
+          "field": "date_utc",
+          "isTimeAware": true
         }]
       }
     }

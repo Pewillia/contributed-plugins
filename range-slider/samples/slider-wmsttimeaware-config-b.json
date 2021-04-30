@@ -86,60 +86,74 @@
         "root": {
           "name": "root",
           "children": [
+            {
+              "name": "A Group with a hidden layer",
+              "expanded": true,
+              "children": [
+                {
+                  "layerId": "0",
+                  "hidden": true
+                },
+                {
+                  "layerId": "powerplant100mw-naturalGas"
+                }
+              ]
+            },
+            {
+              "layerId": "GeoChron"
+            }
           ]
         }
       },
       "layers": [
         {
-          "id": "powerplant100mw-naturalGas",
-          "name": "Natural Gas Pipeline",
-          "layerType": "esriFeature",
-          "url": "https://geoappext.nrcan.gc.ca/arcgis/rest/services/NACEI/energy_infrastructure_of_north_america_en/MapServer/2"
+          "id": "0",
+          "name": "Victoria",
+          "layerType": "ogcWms",
+          "featureInfoMimeType": "text/plain",
+          "url": "https://datacube.services.geo.ca/ows/aerial",
+          "layerEntries": [{
+                "id": "victoria",
+                "name": "victoria"
+            }],
+          "suppressGetCapabilities": true
         },
         {
+          "id": "1",
+          "name": "Halifax",
           "layerType": "ogcWms",
-          "colour": "#ff0000",
-          "toggleSymbology": true,
-          "refreshInterval": 0,
-          "expectedResponseTime": 4000,
-          "tolerance": 5,
-          "imageFormat": "png32",
-          "singleEntryCollapse": false,
-          "suppressGetCapabilities": true,
-          "state": {
-              "opacity": 1,
-              "visibility": true,
-              "boundingBox": false,
-              "query": true,
-              "snapshot": false,
-              "hovertips": true
-          },
-          "layerEntries": [
-              {
-                  "outfields": "*",
-                  "stateOnly": false,
-                  "state": {
-                      "opacity": 1,
-                      "visibility": true,
-                      "boundingBox": false,
-                      "query": true,
-                      "snapshot": false,
-                      "hovertips": true
-                  },
-                  "allStyles": [
-                      "default"
-                  ],
-                  "init": true,
-                  "id": "0",
-                  "name": "Sample",
-                  "currentStyle": "default"
-              }
-          ],
-          "name": "wms",
-          "id": "wms",
-          "url": "https://webservices.maps.canada.ca/arcgis/services/ELECTIONS/elections_canada_2019_en/MapServer/WMSServer",
-          "legendMimeType": "image/png"
-      }
+          "featureInfoMimeType": "text/plain",
+          "url": "https://datacube.services.geo.ca/ows/aerial",
+          "layerEntries": [{
+                "id": "halifax",
+                "name": "halifax"
+            }],
+          "suppressGetCapabilities": true
+        },
+        {
+          "id": "2",
+          "name": "Regina",
+          "layerType": "ogcWms",
+          "featureInfoMimeType": "text/plain",
+          "url": "https://datacube.services.geo.ca/ows/aerial",
+          "layerEntries": [{
+                "id": "regina",
+                "name": "regina"
+            }],
+          "suppressGetCapabilities": true
+        },
+        {
+          "id": "3",
+          "name": "Salish",
+          "layerType": "ogcWms",
+          "featureInfoMimeType": "text/plain",
+          "url": "https://datacube.services.geo.ca/ows/aerial",
+          "layerEntries": [{
+                "id": "salish",
+                "name": "salish"
+            }],
+          "suppressGetCapabilities": true
+        }
       ],
       "extentSets": [
         {
@@ -295,25 +309,37 @@
     "plugins": {
       "rangeSlider": {
         "open": true,
-        "maximize": false,
-        "maximizeDesc": false,
         "autorun": false,
         "loop": false,
-        "controls": ["lock", "loop", "delay", "refresh", "reverse"],
+        "controls": ["lock", "loop", "refresh", "reverse"],
         "params": {
           "delay": 3000,
-          "type": "number",
-          "rangeType": "dual",
-          "stepType": "dynamic",
-          "precision": 0,
-          "range": { "min": 0, "max": 1000 },
-          "limit": { "min": 0, "max": 10000 },
+          "type": "wmst",
+          "rangeType": "single",
+          "stepType": "static",
+          "precision": "date",
+          "range": { "min": null, "max": null },
+          "limit": { "min": null, "max": null },
+          "limits": [],
           "units": "",
-          "description": ""
+          "description": "This slider limit and range is set by the wms getCapabilities."
         },
         "layers": [{
-            "id": "wms",
-            "field": "OBJECTID"
+          "id": "0",
+          "field": "TIME",
+          "isTimeAware": true
+        }, {
+          "id": "1",
+          "field": "TIME",
+          "isTimeAware": true
+        }, {
+          "id": "2",
+          "field": "TIME",
+          "isTimeAware": true
+        }, {
+          "id": "3",
+          "field": "TIME",
+          "isTimeAware": true
         }]
       }
     }
