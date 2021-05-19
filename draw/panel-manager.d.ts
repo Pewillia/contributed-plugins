@@ -4,13 +4,15 @@ export declare class PanelManager {
     private _mousemoveHandler;
     private _mouseclickHandler;
     private _controls;
+    private _wcagAlert;
     /**
      * Panel constructor
      * @constructor
      * @param {Any} mapApi the viewer api
      * @param {Object} config the viewer configuration
+     * @param {String} wcagAlert the alert to show when keyboard use use edit tool
      */
-    constructor(mapApi: any, config: object);
+    constructor(mapApi: any, config: object, wcagAlert: string);
     /**
      * Set the tools inactive
      * @function setInactive
