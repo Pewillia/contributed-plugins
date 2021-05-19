@@ -332,12 +332,21 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
     bottom: initial;
     right: auto; }
 
-.noUi-handle:focus .noUi-tooltip {
-  display: block; }
+.noUi-handle {
+  background-color: #c0c0c0; }
+  .noUi-handle:focus .noUi-tooltip {
+    display: block; }
 
 .noUi-tooltip {
   padding: 1px 4px;
   display: none; }
+
+.noUi-pips {
+  color: #676767; }
+  .noUi-pips .noUi-marker-large {
+    background-color: #8d8d8d; }
+  .noUi-pips .noUi-marker-normal {
+    background-color: #AAA; }
 
 #chart .rv-header-content {
   display: contents; }
