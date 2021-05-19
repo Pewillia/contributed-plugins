@@ -329,6 +329,13 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 .noUi-pips-horizontal .noUi-value-overlap {
   display: none; }
 
+.noUi-pips {
+  color: #676767; }
+  .noUi-pips .noUi-marker-large {
+    background-color: #8d8d8d; }
+  .noUi-pips .noUi-marker-normal {
+    background-color: #AAA; }
+
 input:focus + .noUi-tooltip {
   display: block; }
 
@@ -421,7 +428,7 @@ input:focus + .noUi-tooltip {
       display: flex;
       flex-direction: column;
       width: 100%;
-      padding: 5px 35px; }
+      padding: 5px 40px; }
       .rv-rangeslider .slider-content .slider-bar .slider-bar-noui {
         width: 100%;
         height: 50px; }
@@ -465,14 +472,14 @@ input:focus + .noUi-tooltip {
         overflow: hidden;
         right: 40px;
         position: absolute;
-        color: #999;
+        color: #676767;
         word-break: break-all;
         padding-left: 5px;
         word-break: break-all;
         width: 5%;
         top: 15px; }
   .rv-rangeslider .slider-desc {
-    color: #999;
+    color: #676767;
     overflow: auto;
     height: 60px; }
     .rv-rangeslider .slider-desc span {
